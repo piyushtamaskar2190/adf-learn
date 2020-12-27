@@ -1,0 +1,23 @@
+{
+	"name": "DestionationTableSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableName": {
+				"type": "string",
+				"defaultValue": "EmployeeData"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "staging",
+			"table": "EmployeeData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

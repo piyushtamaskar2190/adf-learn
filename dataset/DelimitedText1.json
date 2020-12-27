@@ -1,0 +1,109 @@
+{
+	"name": "DelimitedText1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "sampledata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "VendorID",
+				"type": "String"
+			},
+			{
+				"name": "lpep_pickup_datetime",
+				"type": "String"
+			},
+			{
+				"name": "Lpep_dropoff_datetime",
+				"type": "String"
+			},
+			{
+				"name": "Store_and_fwd_flag",
+				"type": "String"
+			},
+			{
+				"name": "RateCodeID",
+				"type": "String"
+			},
+			{
+				"name": "Pickup_longitude",
+				"type": "String"
+			},
+			{
+				"name": "Pickup_latitude",
+				"type": "String"
+			},
+			{
+				"name": "Dropoff_longitude",
+				"type": "String"
+			},
+			{
+				"name": "Dropoff_latitude",
+				"type": "String"
+			},
+			{
+				"name": "Passenger_count",
+				"type": "String"
+			},
+			{
+				"name": "Trip_distance",
+				"type": "String"
+			},
+			{
+				"name": "Fare_amount",
+				"type": "String"
+			},
+			{
+				"name": "Extra",
+				"type": "String"
+			},
+			{
+				"name": "MTA_tax",
+				"type": "String"
+			},
+			{
+				"name": "Tip_amount",
+				"type": "String"
+			},
+			{
+				"name": "Tolls_amount",
+				"type": "String"
+			},
+			{
+				"name": "Ehail_fee",
+				"type": "String"
+			},
+			{
+				"name": "improvement_surcharge",
+				"type": "String"
+			},
+			{
+				"name": "Total_amount",
+				"type": "String"
+			},
+			{
+				"name": "Payment_type",
+				"type": "String"
+			},
+			{
+				"name": "Trip_type ",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

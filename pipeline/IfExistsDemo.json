@@ -1,0 +1,42 @@
+{
+	"name": "IfExistsDemo",
+	"properties": {
+		"activities": [
+			{
+				"name": "RegionInsertAndExceptions",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DataFlowTest002",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"SinkinRegionExceptions": {
+								"TableName": "EmployeeData"
+							},
+							"SinkEmployeetoSQL": {
+								"TableName": "EmployeeData"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2020-12-26T12:07:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

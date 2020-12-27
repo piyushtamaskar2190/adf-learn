@@ -1,0 +1,44 @@
+{
+	"name": "DataFlowTest001",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SourceSQL",
+						"type": "DatasetReference"
+					},
+					"name": "DataFlowSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "SalesReportByYearCSV"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SalesPersonData"
+				},
+				{
+					"name": "DerivedYearOrderDate"
+				},
+				{
+					"name": "LineSalesTotal"
+				},
+				{
+					"name": "PivotSalesPersonPerYear"
+				},
+				{
+					"name": "SortSalesPersonByName"
+				}
+			],
+			"script": "source(output(\n\t\tID as integer,\n\t\tCustomerName as string,\n\t\tSalesPerson as string,\n\t\tOrderDate as date,\n\t\tLineTotal as decimal(18,3),\n\t\tQuantity as integer,\n\t\tUnitPrice as decimal(18,3),\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> DataFlowSource\nDataFlowSource select(mapColumn(\n\t\tSalesPerson,\n\t\tOrderDate,\n\t\tQuantity,\n\t\tUnitPrice\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SalesPersonData\nSalesPersonData derive(Year = year(OrderDate)) ~> DerivedYearOrderDate\nDerivedYearOrderDate aggregate(groupBy(SalesPerson,\n\t\tYear),\n\tLineSales = sum(multiply(UnitPrice,Quantity))) ~> LineSalesTotal\nLineSalesTotal pivot(groupBy(SalesPerson),\n\tpivotBy(Year),\n\t{} = sum(LineSales),\n\tcolumnNaming: '$N$VTotal Sales',\n\tlateral: true) ~> PivotSalesPersonPerYear\nPivotSalesPersonPerYear sort(asc(SalesPerson, true)) ~> SortSalesPersonByName\nSortSalesPersonByName sink(input(\n\t\tVendorID as string,\n\t\tlpep_pickup_datetime as string,\n\t\tLpep_dropoff_datetime as string,\n\t\tStore_and_fwd_flag as string,\n\t\tRateCodeID as string,\n\t\tPickup_longitude as string,\n\t\tPickup_latitude as string,\n\t\tDropoff_longitude as string,\n\t\tDropoff_latitude as string,\n\t\tPassenger_count as string,\n\t\tTrip_distance as string,\n\t\tFare_amount as string,\n\t\tExtra as string,\n\t\tMTA_tax as string,\n\t\tTip_amount as string,\n\t\tTolls_amount as string,\n\t\tEhail_fee as string,\n\t\timprovement_surcharge as string,\n\t\tTotal_amount as string,\n\t\tPayment_type as string,\n\t\t{Trip_type } as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['2008_SalesReport'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SalesReportByYearCSV"
+		}
+	}
+}
